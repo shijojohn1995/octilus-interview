@@ -18,16 +18,16 @@ use App\Http\Controllers\UsersController;
 //     return view('index');
 // });
 
-Route::get('/',[App\Http\Controllers\UsersController::class, 'index']);
-Route::resource('users',UsersController::class);
+Route::get('/', [App\Http\Controllers\UsersController::class, 'index'])->name('listing');
+Route::resource('users', UsersController::class);
 
 
-Route::get('/registre', function () {
-    return view('sign_up')->name('register');
-});
+// Route::get('/registre', function () {
+//     return view('sign_up')->name('register');
+// });
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

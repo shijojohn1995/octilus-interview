@@ -14,7 +14,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::orderBy('updated_at','DESC')->paginate(10);
+        $users = User::orderBy('updated_at', 'DESC')->paginate(3);
         return view('index', compact('users'));
     }
 
@@ -60,7 +60,7 @@ class UsersController extends Controller
     {
         $user = User::find($id);
 
-        return view('edit' , compact('user'));
+        return view('edit', compact('user'));
     }
 
     /**
@@ -70,9 +70,26 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
     {
-        //
+        // dd("edit");
+        $request->validate([
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
+            'gender' => ['required', 'string', 'max:255'],
+            'country' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $user->id],
+        ]);
+
+        $user->update([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'gender' => $request->gender,
+            'country' => $request->country,
+            'email' => $request->email,
+        ]);
+
+        return redirect()->route('listing')->with('success', 'User Successfully Updated');
     }
 
     /**
@@ -81,8 +98,9 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, User $user)
     {
-        //
+        $user->delete();
+        return redirect()->route('listing')->with('success', 'User Successfully Deleted');
     }
 }

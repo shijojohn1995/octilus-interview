@@ -57,7 +57,8 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         // Auth::login($user);
-        return view('welcome');
+        return redirect()->route('listing')->with('success', 'User Successfully Added');
+        // return view('auth.register');
 
         // return redirect(RouteServiceProvider::HOME);
     }

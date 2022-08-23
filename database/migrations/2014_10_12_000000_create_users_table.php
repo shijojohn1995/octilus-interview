@@ -23,7 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('gender');
             $table->string('country');
             $table->string('terms');
-            $table->string('newsletter');
+            $table->string('newsletter')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
