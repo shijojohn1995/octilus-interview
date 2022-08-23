@@ -13,8 +13,8 @@
                                 <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">User Registration</p>
                                 <x-auth-validation-errors class="mb-4" :errors="$errors" />
 
-                                <form class="mx-3 my-3 mx-md-6 " id="user_reg" method="POST"
-                                    action="{{ route('register') }}">
+                                <form class="mx-3 my-3 mx-md-6 " name="user_reg" id="user_reg" method="POST"
+                                    action="{{ route('register') }}" onsubmit="return validateForm();">
                                     @csrf
 
                                     <div class="d-flex flex-row align-items-center mb-4">
@@ -24,6 +24,7 @@
                                                 Name</label>
                                             <x-input id="first_name" class="block mt-1 w-full form-control"
                                                 type="text" name="first_name" :value="old('first_name')" autofocus />
+                                            <div id="f_name_error"></div>
 
 
                                         </div>
@@ -32,6 +33,8 @@
                                                 Name</label>
                                             <x-input id="last_name" class="block mt-1 w-full form-control"
                                                 type="text" name="last_name" :value="old('last_name')" autofocus />
+                                            <div id="l_name_error"></div>
+
                                         </div>
                                     </div>
 
@@ -41,6 +44,8 @@
                                             <label class="form-label" for="form3Example3c">Your Email</label>
                                             <x-input id="email" class="block mt-1 w-full form-control"
                                                 type="email" name="email" :value="old('email')" />
+                                            <div id="email_error"></div>
+
                                         </div>
                                     </div>
 
@@ -50,6 +55,8 @@
                                             <label class="form-label" for="form3Example4c">Password</label>
                                             <x-input id="password" class="block mt-1 w-full form-control"
                                                 autocomplete="new-password" name="password" />
+                                            <div id="password_error"></div>
+
                                         </div>
                                     </div>
 
@@ -59,6 +66,8 @@
                                             <label class="form-label" for="form3Example4cd">Repeat your password</label>
                                             <x-input id="password_confirmation" class="block mt-1 w-full form-control"
                                                 type="password" name="password_confirmation" />
+                                            <div id="c_password_error"></div>
+
                                         </div>
                                     </div>
                                     <div class="d-flex flex-row align-items-center mb-4 mx-5">
@@ -78,15 +87,24 @@
                                             </label>
                                         </div>
 
+
                                     </div>
-                                    <div class="d-flex flex-row align-items-center mb-4 ms-3">
-                                        <select class="form-control" aria-label="Default select example" name="country">
-                                            <option selected>Select country</option>
-                                            <option value="India">India</option>
-                                            <option value="USA">USA</option>
-                                            <option value="UAE">UAE</option>
-                                        </select>
+
+                                    <div id="gender_error"></div>
+
+                                    <div class="d-flex flex-row align-items-center mb-4">
+                                        <i class="fa fa-map fa-lg me-3 fa-fw"></i>
+                                        <div class="form-outline flex-fill mb-0">
+                                            <select class="form-control" aria-label="Default select example"
+                                                name="country">
+                                                <option selected>Select country</option>
+                                                <option value="India">India</option>
+                                                <option value="USA">USA</option>
+                                                <option value="UAE">UAE</option>
+                                            </select>
+                                        </div>
                                     </div>
+                                    <div id="country_error"></div>
 
                                     <div class="form-check d-flex mx-3 mb-5">
                                         <input class="form-check-input me-2" type="checkbox" value="Yes"
@@ -95,6 +113,8 @@
                                             I agree all statements in <a href="#!">Terms of service</a>
                                         </label>
                                     </div>
+                                    <div id="terms_error"></div>
+
                                     <div class="form-check d-flex mx-3 mb-5">
                                         <input class="form-check-input me-2" type="checkbox" value="Yes"
                                             name="newsletter" id="form2Example3c" />
@@ -123,35 +143,54 @@
         </div>
     </div>
 </section>
-<script>
-    $(document).ready(function() {
-        $("#user_reg").validate({
-            rules: {
-                first_name: "required",
-                last_name: "required",
-                email: "required",
-                password: "required",
-                confirmPassword: "required",
-                gender: "required",
-                country: "country",
-                terms: "required",
-            },
-            messages: {
-                first_name: "First name is required",
-                last_name: "Last name is required",
-                email: "Email is required",
-                email: "Phone number is required",
-                // password: "Password is required",
-                // confirmPassword: "Confirm password is required",
-                // gender: "Please select the gender",
-                // dateOfBirth: "Date of birth is required",
-                // address: "Address is required",
-                // city: "City is required",
-                // state: "State is required",
-                // zipcode: "Zipcode is required",
-            }
-        });
-    });
+<script type="text/javascript">
+    function validateForm() {
+        var eL = document.forms["user_reg"]["email"].value
+        var fN = document.forms["user_reg"]["first_name"].value
+        var lN = document.forms["user_reg"]["last_name"].value
+        var gR = document.forms["user_reg"]["gender"].value
+        var pW = document.forms["user_reg"]["password"].value
+        var cP = document.forms["user_reg"]["password_confirmation"].value
+        var cY = document.forms["user_reg"]["country"].value
+        var tS = document.forms["user_reg"]["terms"].value
+        var atpos = eL.indexOf("@");
+        var dotpos = eL.lastIndexOf(".");
+
+        if (fN.length <= 2) {
+            document.getElementById("f_name_error").innerHTML = "Not a valid first name";
+            return false;
+        }
+
+        if (lN.length <= 2) {
+            document.getElementById("l_name_error").innerHTML = "Not a valid last name";
+            return false;
+        }
+        if (atpos < 1 || dotpos < atpos + 2 || dotpos + 2 >= eL.length) {
+            document.getElementById("email_error").innerHTML = "Not a valid e-mail address";
+            return false;
+        }
+        if (pW.length <= 2) {
+            document.getElementById("password_error").innerHTML = "Not a valid password";
+            return false;
+        }
+        if (cP != pW) {
+            document.getElementById("c_password_error").innerHTML = "Not a valid password";
+            return false;
+        }
+        if (gR.length <= 2) {
+            document.getElementById("gender_error").innerHTML = "Select gender";
+            return false;
+        }
+
+        if (cY.length <= 2) {
+            document.getElementById("country_error").innerHTML = "Select country";
+            return false;
+        }
+        if (tS.length <= 2) {
+            document.getElementById("terms_error").innerHTML = "Please agree statements";
+            return false;
+        }
+    }
 </script>
 
 {{-- </x-auth-card>
