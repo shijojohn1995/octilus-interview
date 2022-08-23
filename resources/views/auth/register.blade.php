@@ -13,7 +13,8 @@
                                 <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">User Registration</p>
                                 <x-auth-validation-errors class="mb-4" :errors="$errors" />
 
-                                <form class="mx-3 my-3 mx-md-6 " method="POST" action="{{ route('register') }}">
+                                <form class="mx-3 my-3 mx-md-6 " id="user_reg" method="POST"
+                                    action="{{ route('register') }}">
                                     @csrf
 
                                     <div class="d-flex flex-row align-items-center mb-4">
@@ -22,7 +23,7 @@
                                             <label class="form-label" for="form3Example1c" for="name">First
                                                 Name</label>
                                             <x-input id="first_name" class="block mt-1 w-full form-control"
-                                                type="text" name="first_name" :value="old('first_name')" required autofocus />
+                                                type="text" name="first_name" :value="old('first_name')" autofocus />
 
 
                                         </div>
@@ -30,7 +31,7 @@
                                             <label class="form-label" for="form3Example1c" for="name">Last
                                                 Name</label>
                                             <x-input id="last_name" class="block mt-1 w-full form-control"
-                                                type="text" name="last_name" :value="old('last_name')" required autofocus />
+                                                type="text" name="last_name" :value="old('last_name')" autofocus />
                                         </div>
                                     </div>
 
@@ -39,7 +40,7 @@
                                         <div class="form-outline flex-fill mb-0">
                                             <label class="form-label" for="form3Example3c">Your Email</label>
                                             <x-input id="email" class="block mt-1 w-full form-control"
-                                                type="email" name="email" :value="old('email')" required />
+                                                type="email" name="email" :value="old('email')" />
                                         </div>
                                     </div>
 
@@ -47,7 +48,7 @@
                                         <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
                                         <div class="form-outline flex-fill mb-0">
                                             <label class="form-label" for="form3Example4c">Password</label>
-                                            <x-input id="password" class="block mt-1 w-full form-control" required
+                                            <x-input id="password" class="block mt-1 w-full form-control"
                                                 autocomplete="new-password" name="password" />
                                         </div>
                                     </div>
@@ -57,7 +58,7 @@
                                         <div class="form-outline flex-fill mb-0">
                                             <label class="form-label" for="form3Example4cd">Repeat your password</label>
                                             <x-input id="password_confirmation" class="block mt-1 w-full form-control"
-                                                type="password" name="password_confirmation" required />
+                                                type="password" name="password_confirmation" />
                                         </div>
                                     </div>
                                     <div class="d-flex flex-row align-items-center mb-4 mx-5">
@@ -90,7 +91,7 @@
                                     <div class="form-check d-flex mx-3 mb-5">
                                         <input class="form-check-input me-2" type="checkbox" value="Yes"
                                             id="form2Example3c" name="terms" />
-                                        <label class="form-check-label" for="form2Example3" required>
+                                        <label class="form-check-label" for="form2Example3">
                                             I agree all statements in <a href="#!">Terms of service</a>
                                         </label>
                                     </div>
@@ -122,7 +123,36 @@
         </div>
     </div>
 </section>
-
+<script>
+    $(document).ready(function() {
+        $("#user_reg").validate({
+            rules: {
+                first_name: "required",
+                last_name: "required",
+                email: "required",
+                password: "required",
+                confirmPassword: "required",
+                gender: "required",
+                country: "country",
+                terms: "required",
+            },
+            messages: {
+                first_name: "First name is required",
+                last_name: "Last name is required",
+                email: "Email is required",
+                email: "Phone number is required",
+                // password: "Password is required",
+                // confirmPassword: "Confirm password is required",
+                // gender: "Please select the gender",
+                // dateOfBirth: "Date of birth is required",
+                // address: "Address is required",
+                // city: "City is required",
+                // state: "State is required",
+                // zipcode: "Zipcode is required",
+            }
+        });
+    });
+</script>
 
 {{-- </x-auth-card>
 </x-guest-layout> --}}
