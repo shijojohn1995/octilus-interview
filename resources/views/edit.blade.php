@@ -86,7 +86,7 @@
                                                     @if ($user->country == 'USA') selected @endif>USA
                                                 </option>
                                                 <option value="UAE"
-                                                    @if ($user->country == 'USA') selected @endif>UAE
+                                                    @if ($user->country == 'UAE') selected @endif>UAE
                                                 </option>
                                             </select>
                                         </div>
